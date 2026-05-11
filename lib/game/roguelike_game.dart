@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -6,79 +7,85 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'moves.dart';
 import 'creatures.dart';
+import 'world_map.dart';
+import 'battle_system.dart';
+import 'battle_ui.dart';
+
+enum GameState { worldMap, battle, result }
 
 class RoguelikeGame extends FlameGame {
-  RoguelikeGame({required this.onExit, this.selectedCreature});
+  RoguelikeGame({required this.onExit, required this.selectedCreature});
 
   final VoidCallback onExit;
-  final Creature? selectedCreature;
+  final Creature selectedCreature;
   late List<Creature> creatures;
   late Map<String, Move> moveMap;
+  GameState state = GameState.worldMap;
 
   @override
   Future<void> onLoad() async {
-    // Load JSON from assets
+    // Load data
     final movesJsonString = await rootBundle.loadString('assets/moves.json');
-    final creaturesJsonString =
-        await rootBundle.loadString('assets/creatures.json');
-
+    final creaturesJsonString = await rootBundle.loadString('assets/creatures.json');
     final movesList = json.decode(movesJsonString) as List<dynamic>;
     final creaturesList = json.decode(creaturesJsonString) as List<dynamic>;
-
-    // Build move map
     moveMap = loadMovesFromJson(movesList);
-    // Build creatures with resolved moves
     creatures = loadCreaturesFromJson(creaturesList, moveMap);
 
     camera.viewfinder.anchor = Anchor.topLeft;
 
-    // Add UI
-    await add(
-      ExitButton(
-        position: Vector2(size.x - 60, 20),
-        onPressed: onExit,
-      ),
+    await add(ExitButton(
+      position: Vector2(size.x - 60, 20),
+      onPressed: onExit,
+    ));
+
+    // Start on the world map
+    _loadWorldMap();
+  }
+
+  void _loadWorldMap() {
+    state = GameState.worldMap;
+    // Remove any existing battle/world map components
+    children.whereType<WorldMapComponent>().forEach((c) => c.removeFromParent());
+    children.whereType<BattleScene>().forEach((c) => c.removeFromParent());
+
+    final worldMap = WorldMapComponent(
+      onNodeSelected: (node) {
+        if (node.type == MapNodeType.battle || node.type == MapNodeType.boss) {
+          _startBattle();
+        }
+      },
+      creatures: creatures,
     );
+    add(worldMap);
+  }
 
-    // Display selected creature if provided
-    double yOffset = 80;
-    if (selectedCreature != null) {
-      await add(
-        TextComponent(
-          text: 'Active: ${selectedCreature!.name} (${selectedCreature!.type.toJson()})',
-          textRenderer: TextPaint(
-            style: const TextStyle(
-                color: Color(0xFF00E676), fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          position: Vector2(20, yOffset),
-          anchor: Anchor.topLeft,
-        ),
-      );
-      yOffset += 40;
-    }
+  void _startBattle() {
+    state = GameState.battle;
+    children.whereType<WorldMapComponent>().forEach((c) => c.removeFromParent());
+    children.whereType<BattleScene>().forEach((c) => c.removeFromParent());
 
-    // Display creature names as a quick test
-    for (final creature in creatures) {
-      await add(
-        TextComponent(
-          text: '${creature.name} (${creature.type.toJson()}) - moves: ${creature.moves.map((m) => m.name).join(", ")}',
-          textRenderer: TextPaint(
-            style: const TextStyle(color: Colors.yellow, fontSize: 16),
-          ),
-          position: Vector2(20, yOffset),
-          anchor: Anchor.topLeft,
-        ),
-      );
-      yOffset += 30;
-    }
+    // Pick a random enemy from creatures (excluding the player's own)
+    final enemyPool = creatures.where((c) => c.id != selectedCreature.id).toList();
+    final enemyBase = enemyPool[Random().nextInt(enemyPool.length)];
+    final playerBattle = BattleCreature(selectedCreature);
+    final enemyBattle = BattleCreature(enemyBase);
+
+    final battleScene = BattleScene(
+      player: playerBattle,
+      enemy: enemyBattle,
+      onBattleEnd: (playerWon) {
+        // After battle, return to world map (or show result, then map)
+        _loadWorldMap();
+      },
+    );
+    add(battleScene);
   }
 }
 
 class ExitButton extends TextComponent with TapCallbacks {
-  ExitButton({
-    required super.position,
-    required this.onPressed,
-  }) : super(
+  ExitButton({required super.position, required this.onPressed})
+      : super(
           text: 'X',
           textRenderer: TextPaint(
             style: const TextStyle(color: Colors.white, fontSize: 32),
@@ -89,7 +96,5 @@ class ExitButton extends TextComponent with TapCallbacks {
   final VoidCallback onPressed;
 
   @override
-  void onTapUp(TapUpEvent event) {
-    onPressed();
-  }
+  void onTapUp(TapUpEvent event) => onPressed();
 }
