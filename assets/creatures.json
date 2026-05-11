@@ -1,0 +1,46 @@
+[
+  {
+    "id": "c001",
+    "name": "Embrix",
+    "type": "fire",
+    "rarity": "common",
+    "isShiny": false,
+    "stats": {
+      "hp": 90,
+      "attack": 14,
+      "defence": 8,
+      "speed": 12,
+      "spirit": 4
+    },
+    "moveIds": ["001", "004"],
+    "passive": {
+      "name": "Blaze",
+      "description": "Deal +10% damage when HP < 50%"
+    },
+    "evolutionStage": 1,
+    "isUnlocked": true,
+    "runCount": 0
+  },
+  {
+    "id": "c002",
+    "name": "Thalor",
+    "type": "water",
+    "rarity": "common",
+    "isShiny": false,
+    "stats": {
+      "hp": 100,
+      "attack": 11,
+      "defence": 9,
+      "speed": 10,
+      "spirit": 5
+    },
+    "moveIds": ["002", "003"],
+    "passive": {
+      "name": "Soothing Waters",
+      "description": "Heal 5 HP after each battle won"
+    },
+    "evolutionStage": 1,
+    "isUnlocked": true,
+    "runCount": 0
+  }
+]

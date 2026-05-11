@@ -1,0 +1,39 @@
+[
+  {
+    "id": "001",
+    "name": "Embershot",
+    "type": "fire",
+    "power": 45,
+    "spiritCost": 2,
+    "effect": "burn",
+    "effectChance": 0.3,
+    "cooldown": 0,
+    "rarity": "common"
+  },
+  {
+    "id": "002",
+    "name": "Tidal Surge",
+    "type": "water",
+    "power": 55,
+    "spiritCost": 3,
+    "rarity": "common"
+  },
+  {
+    "id": "003",
+    "name": "Glacial Spike",
+    "type": "water",
+    "power": 70,
+    "spiritCost": 4,
+    "effect": "freeze",
+    "effectChance": 0.25,
+    "rarity": "uncommon"
+  },
+  {
+    "id": "004",
+    "name": "Sizzling Claw",
+    "type": "fire",
+    "power": 60,
+    "spiritCost": 3,
+    "rarity": "common"
+  }
+]

@@ -1,0 +1,34 @@
+# Non-core platform directories (Boilerplate)
+/android/
+/ios/
+/linux/
+/macos/
+/windows/
+/web/
+
+# Flutter/Dart/Pub related
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+/coverage/
+pubspec.lock
+
+# IDE and System files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+*.log
+*.swp
+*~
+*.kate-swp
+
+# Symbolication and Obfuscation
+app.*.symbols
+app.*.map.json
