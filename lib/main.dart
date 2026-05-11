@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'game/creatures.dart';
+import 'game/types.dart';
 import 'screens/login_screen.dart';
 import 'screens/main_menu_screen.dart';
 import 'screens/game_screen.dart';
@@ -33,7 +35,17 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (_) => const LoginScreen(),
         '/menu': (_) => const MainMenuScreen(),
-        '/game': (_) => const GameScreen(),
+        '/game': (_) => GameScreen(
+              selectedCreature: Creature(
+                id: 'dummy',
+                name: 'Dummy',
+                type: CreatureType.fire,
+                rarity: Rarity.common,
+                stats: Stats(hp: 100, attack: 10, defence: 10, speed: 10, spirit: 10),
+                passive: const PassiveAbility(name: 'Dummy', description: 'Dummy'),
+                moves: [],
+              ),
+            ),
       },
     );
   }

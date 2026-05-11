@@ -1,9 +1,11 @@
+// lib/game/battle_ui.dart (MODIFIED – sprite components + animations)
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'moves.dart';
 import 'battle_system.dart';
+import 'creature_sprite.dart';
 
 /// A single HP bar component.
 class HpBar extends PositionComponent {
@@ -26,7 +28,6 @@ class HpBar extends PositionComponent {
       RRect.fromLTRBR(0, 0, size.x * ratio, size.y, const Radius.circular(4)),
       fgPaint,
     );
-    // Optional: text with HP numbers
   }
 }
 
@@ -84,7 +85,6 @@ class DamageNumber extends PositionComponent {
       anchor: Anchor.center,
     );
     add(textComp);
-    // Animate upward and fade
     final moveTween = MoveEffect.to(
       Vector2(0, -60),
       LinearEffectController(1.0),
@@ -100,8 +100,8 @@ class BattleScene extends PositionComponent {
   BattleScene({
     required this.player,
     required this.enemy,
-    required this.onBattleEnd, // callback with victory flag
-  }) : super(size: Vector2(800, 600)); // example
+    required this.onBattleEnd,
+  }) : super(size: Vector2(800, 600));
 
   final BattleCreature player;
   final BattleCreature enemy;
@@ -109,6 +109,8 @@ class BattleScene extends PositionComponent {
 
   late HpBar playerHpBar;
   late HpBar enemyHpBar;
+  late CreatureSpriteComponent playerSprite;
+  late CreatureSpriteComponent enemySprite;
   List<MoveButton> moveButtons = [];
 
   @override
@@ -119,6 +121,20 @@ class BattleScene extends PositionComponent {
       paint: Paint()..color = const Color(0xFF1A1A2E),
     ));
 
+    // Sprites (placeholder animations)
+    playerSprite = CreatureSpriteComponent(
+      creature: player,
+      position: Vector2(100, 250),
+      size: Vector2(120, 120),
+    );
+    enemySprite = CreatureSpriteComponent(
+      creature: enemy,
+      position: Vector2(580, 150),
+      size: Vector2(120, 120),
+    );
+    add(playerSprite);
+    add(enemySprite);
+
     // HP bars
     playerHpBar = HpBar(creature: player, isEnemy: false)
       ..position = Vector2(50, size.y - 100);
@@ -127,7 +143,7 @@ class BattleScene extends PositionComponent {
     add(playerHpBar);
     add(enemyHpBar);
 
-    // Move buttons (max 4)
+    // Move buttons
     final moves = player.base.moves.take(4).toList();
     for (int i = 0; i < moves.length; i++) {
       final btn = MoveButton(
@@ -141,36 +157,54 @@ class BattleScene extends PositionComponent {
   }
 
   void _executePlayerMove(Move move) async {
-    if (player.spirit < move.spiritCost) return; // not enough spirit
+    if (player.spirit < move.spiritCost) return;
 
+    // Play attack animation for player
+    playerSprite.playAttack();
     final result = executeTurn(player, move, enemy);
+
     // Show damage numbers
     if (result.playerDamage > 0) {
       add(DamageNumber(
         amount: result.playerDamage,
-        position: enemyHpBar.position + Vector2(100, 10),
+        position: enemySprite.position + Vector2(60, 10),
       ));
     }
     if (result.enemyDamage > 0) {
       add(DamageNumber(
         amount: result.enemyDamage,
-        position: playerHpBar.position + Vector2(100, 10),
+        position: playerSprite.position + Vector2(60, 10),
       ));
     }
 
-    // Update HP bars (they repaint automatically via the creature reference)
+    // Play hurt animation on target(s) if damaged
+    if (result.playerDamage > 0) {
+      enemySprite.playHurt();
+    }
+    if (result.enemyDamage > 0) {
+      playerSprite.playHurt();
+    }
+    // If a creature fainted, play faint animation
+    if (result.playerFainted) {
+      playerSprite.playFaint();
+    }
+    if (result.enemyFainted) {
+      enemySprite.playFaint();
+    }
+
     playerHpBar.creature = player;
     enemyHpBar.creature = enemy;
-    // Update status UI if needed (simplified: just repaint)
 
     await Future.delayed(const Duration(milliseconds: 500));
 
     if (result.playerFainted || result.enemyFainted) {
-      // Disable buttons
       for (final btn in moveButtons) {
         btn.removeFromParent();
       }
       onBattleEnd(!result.playerFainted);
     }
+    // After attack, return to idle
+    if (!result.playerFainted) playerSprite.playIdle();
+    if (!result.enemyFainted) enemySprite.playIdle();
   }
 }

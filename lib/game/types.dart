@@ -1,3 +1,4 @@
+// lib/game/types.dart (unchanged)
 /// Shared type enums used across creatures and moves.
 enum CreatureType {
   fire,

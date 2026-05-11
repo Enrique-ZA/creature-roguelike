@@ -1,3 +1,4 @@
+// lib/game/battle_system.dart (MODIFIED – passives)
 import 'dart:math';
 import 'creatures.dart';
 import 'moves.dart';
@@ -15,9 +16,21 @@ class BattleCreature {
         spirit = base.stats.spirit;
 
   bool get isAlive => currentHp > 0;
-  int get speed => base.stats.speed; // can be modified by statuses later
+
+  // Passive ability speed modifier
+  int get speed {
+    int baseSpeed = base.stats.speed;
+    if (base.passive.name == 'Tailwind' && currentHp > base.stats.hp * 0.5) {
+      return (baseSpeed * 1.2).round();
+    }
+    return baseSpeed;
+  }
 
   void applyDamage(int amount) {
+    // Passive: Terravox's Stone Skin
+    if (base.passive.name == 'Stone Skin') {
+      amount = (amount * 0.85).round();
+    }
     if (statuses.hasEffect(StatusEffect.shield)) {
       amount ~/= 2; // shield halves damage
     }
@@ -26,6 +39,14 @@ class BattleCreature {
 
   void heal(int amount) {
     currentHp = min(base.stats.hp, currentHp + amount);
+  }
+
+  // Blaze: +10% damage when HP < 50%
+  double get damageMultiplier {
+    if (base.passive.name == 'Blaze' && currentHp < base.stats.hp * 0.5) {
+      return 1.10;
+    }
+    return 1.0;
   }
 }
 
@@ -39,7 +60,6 @@ Move? selectAiMove(BattleCreature creature) {
 }
 
 /// Resolve one turn: player vs enemy using speed-based order.
-/// Returns a [TurnResult] describing what happened.
 class TurnResult {
   final bool playerMovedFirst;
   final String playerMoveName;
@@ -72,11 +92,13 @@ TurnResult executeTurn(
   final enemyMove = selectAiMove(enemy);
   final playerFirst = player.speed >= enemy.speed;
 
-  // Helper to perform a move
   void performMove(BattleCreature user, Move move, BattleCreature target, bool isPlayer) {
     user.spirit -= move.spiritCost;
     if (move.power > 0) {
-      target.applyDamage(move.power);
+      int damage = move.power;
+      // Apply user's Blaze passive
+      damage = (damage * user.damageMultiplier).round();
+      target.applyDamage(damage);
     }
     if (move.effect != null) {
       final effect = StatusEffect.values.firstWhere(
@@ -85,7 +107,7 @@ TurnResult executeTurn(
       );
       target.statuses.apply(effect);
     }
-    // special effects like heal or restore spirit are handled within the move's effect
+    // special effects like heal or restore spirit
     if (move.effect == 'heal') {
       user.heal(move.power);
     } else if (move.effect == 'restoreSpirit') {
@@ -101,7 +123,6 @@ TurnResult executeTurn(
   bool playerFainted = false, enemyFainted = false;
 
   if (playerFirst) {
-    // Player goes first
     playerDamage = playerMove.power;
     if (playerMove.effect != null) {
       enemyEffect = StatusEffect.values.firstWhere((e) => e.name == playerMove.effect);
@@ -121,7 +142,6 @@ TurnResult executeTurn(
         enemyFainted: true,
       );
     }
-    // Enemy retaliates
     if (enemyMove != null) {
       enemyDamage = enemyMove.power;
       if (enemyMove.effect != null) {
@@ -131,7 +151,6 @@ TurnResult executeTurn(
       if (!player.isAlive) playerFainted = true;
     }
   } else {
-    // Enemy first
     if (enemyMove != null) {
       enemyDamage = enemyMove.power;
       if (enemyMove.effect != null) {
@@ -153,7 +172,6 @@ TurnResult executeTurn(
         );
       }
     }
-    // Player then moves
     playerDamage = playerMove.power;
     if (playerMove.effect != null) {
       enemyEffect = StatusEffect.values.firstWhere((e) => e.name == playerMove.effect);

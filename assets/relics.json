@@ -1,0 +1,13 @@
+// assets/relics.json (NEW)
+[
+  { "id": "r001", "name": "Flame Emblem", "description": "Fire moves deal 15% more damage.", "rarity": "common" },
+  { "id": "r002", "name": "Aqua Pearl", "description": "Water moves heal the user for 10% of damage dealt.", "rarity": "uncommon" },
+  { "id": "r003", "name": "Stone Pendant", "description": "Gain a 20 HP shield at the start of each battle.", "rarity": "rare" },
+  { "id": "r004", "name": "Gale Feather", "description": "Speed is increased by 10%.", "rarity": "common" },
+  { "id": "r005", "name": "Shadow Cloak", "description": "10% chance to dodge any attack.", "rarity": "rare" },
+  { "id": "r006", "name": "Light Prism", "description": "Status effect durations reduced by 1 turn.", "rarity": "uncommon" },
+  { "id": "r007", "name": "Void Shard", "description": "Spirit costs reduced by 1 (minimum 1).", "rarity": "epic" },
+  { "id": "r008", "name": "Healing Salve", "description": "Heal 20 HP after each battle.", "rarity": "common" },
+  { "id": "r009", "name": "Thunder Core", "description": "Storm moves have a 20% chance to paralyze.", "rarity": "uncommon" },
+  { "id": "r010", "name": "Cursed Effigy", "description": "Curse effects last 2 turns longer on enemies.", "rarity": "rare" }
+]

@@ -16,21 +16,30 @@ lib/
 │   ├── Monster-Roguelike-PRD.md      # Game design document
 │   ├── types.dart                    # CreatureType enum (8 types), Rarity enum
 │   ├── creatures.dart                # Creature, Stats, PassiveAbility models + CreatureDataLoader
+│   ├── creature_sprite.dart          # Creature sprite rendering logic
 │   ├── moves.dart                    # Move model + loader
 │   ├── status_effects.dart           # Status effect logic (Burn, Poison, etc.)
 │   ├── battle_system.dart            # Turn-based battle logic, damage calculation
 │   ├── battle_ui.dart                # Flame components for battle (HP bars, buttons)
 │   ├── world_map.dart                # Procedural map generation and navigation
+│   ├── nodes.dart                    # Node types for map
+│   ├── puzzle_sequencer.dart         # Puzzle logic
+│   ├── relics.dart                   # Relic system logic
 │   ├── contrast-checker.js           # WCAG colour contrast checker
 │   └── roguelike_game.dart           # FlameGame: Orchestrates map/battle states
 └── screens/
     ├── login_screen.dart             # Placeholder login → /menu
     ├── main_menu_screen.dart         # Placeholder menu → creature select → game
     ├── creature_select_screen.dart   # Creature cards, stat bars, rarity glow, start run
-    └── game_screen.dart              # Wraps Flame GameWidget (accepts selected creature)
+    ├── game_screen.dart              # Wraps Flame GameWidget (accepts selected creature)
+    ├── puzzle_screen.dart            # Puzzle interface
+    ├── rest_screen.dart              # Rest node screen
+    ├── run_end_screen.dart           # Run summary/end screen
+    └── shop_screen.dart              # Shop interface
 assets/
 ├── creatures.json                    # Expanded creature data
-└── moves.json                        # Expanded move data
+├── moves.json                        # Expanded move data
+└── relics.json                       # Relic data
 ```
 
 ## Coding Conventions
