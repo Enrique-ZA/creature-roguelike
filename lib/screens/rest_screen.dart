@@ -1,4 +1,3 @@
-// lib/screens/rest_screen.dart (NEW)
 import 'package:flutter/material.dart';
 
 class RestScreen extends StatefulWidget {

@@ -1,4 +1,3 @@
-// lib/screens/shop_screen.dart (NEW – shop UI)
 import 'package:flutter/material.dart';
 import '../game/relics.dart';
 import '../game/types.dart';

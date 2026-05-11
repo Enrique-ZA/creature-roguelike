@@ -1,4 +1,3 @@
-// lib/game/relics.dart (NEW – relic model + loader)
 import 'types.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;

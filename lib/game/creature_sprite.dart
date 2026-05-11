@@ -1,4 +1,3 @@
-// lib/game/creature_sprite.dart (NEW – placeholder sprite component)
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'battle_system.dart';

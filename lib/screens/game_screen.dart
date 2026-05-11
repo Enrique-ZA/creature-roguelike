@@ -6,7 +6,7 @@ import '../game/creatures.dart';
 import '../game/relics.dart';
 import 'shop_screen.dart';
 import 'rest_screen.dart';
-import 'puzzle_screen.dart';
+import 'fishing_game_screen.dart';
 import 'run_end_screen.dart';
 
 class GameScreen extends StatefulWidget {
@@ -63,8 +63,7 @@ class _GameScreenState extends State<GameScreen> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => PuzzleScreen(
-          sequenceLength: 4,
+        builder: (_) => FishingGameScreen(
           onResult: (success) {
             result = success;
             Navigator.pop(context);
