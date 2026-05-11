@@ -5,6 +5,7 @@
 - dart format
 - tests: test/widget_test.dart
 - flutter analyze
+- git repository: creature-roguelike
 
 ## Project Structure
 ```
@@ -16,16 +17,20 @@ lib/
 │   ├── types.dart                    # CreatureType enum (8 types), Rarity enum
 │   ├── creatures.dart                # Creature, Stats, PassiveAbility models + CreatureDataLoader
 │   ├── moves.dart                    # Move model + loader
+│   ├── status_effects.dart           # Status effect logic (Burn, Poison, etc.)
+│   ├── battle_system.dart            # Turn-based battle logic, damage calculation
+│   ├── battle_ui.dart                # Flame components for battle (HP bars, buttons)
+│   ├── world_map.dart                # Procedural map generation and navigation
 │   ├── contrast-checker.js           # WCAG colour contrast checker
-│   └── roguelike_game.dart           # FlameGame: loads data, renders test text
+│   └── roguelike_game.dart           # FlameGame: Orchestrates map/battle states
 └── screens/
     ├── login_screen.dart             # Placeholder login → /menu
     ├── main_menu_screen.dart         # Placeholder menu → creature select → game
     ├── creature_select_screen.dart   # Creature cards, stat bars, rarity glow, start run
     └── game_screen.dart              # Wraps Flame GameWidget (accepts selected creature)
 assets/
-├── creatures.json                    # 2 creatures defined (Embrix, Thalor)
-└── moves.json                        # 4 moves defined
+├── creatures.json                    # Expanded creature data
+└── moves.json                        # Expanded move data
 ```
 
 ## Coding Conventions
@@ -33,24 +38,23 @@ assets/
 - Flame components, UI widgets, and data models each get their own file.
 - JSON data files live in `assets/` and are loaded via `rootBundle`.
 - **Contrast:** Verify colours using `node lib/game/contrast-checker.js <fg> <bg>` before assigning text-on-surface colours.
-- **Keep files small** — target ≤300 lines per file. Split concerns into separate files early.
-- Flame components, UI widgets, and data models each get their own file.
-- JSON data files live in `assets/` and are loaded via `rootBundle`.
+
+Skip *ANY* audio related tasks for now
 
 ## Phase 0 — Pre-Production (4 weeks)
 - [ ] Finalise GDD (this document + appendices)
 - [ ] Art direction: style guide, palette, creature silhouettes (first 10)
 - [x] Prototype: single battle loop (Flutter + Flame, no polish)
 - [ ] Tech spike: Flame performance on low-end Android
-- [ ] Set up monorepo (GitHub), CI pipeline skeleton
+- [ ] Set up monorepo (GitHub), CI pipeline skeleton [User: I believe we set up a repository]
 - [x] Define creature data schema, move database schema
 - [ ] Sound direction: reference tracks, SFX approach
 
 ## Phase 1 — Core Loop MVP (8 weeks)
 - [x] Creature select screen (cards, stats, rarity glow, start run)
-- [ ] World map screen (procedural graph, tap navigation)
-- [ ] Battle system: turn order, 4 moves, HP, status effects (5 effects)
-- [ ] Battle UI: sprites, HP bars, move buttons, damage numbers
+- [x] World map screen (procedural graph, tap navigation)
+- [x] Battle system: turn order, 4 moves, HP, status effects (5 effects)
+- [x] Battle UI: sprites, HP bars, move buttons, damage numbers
 - [ ] 5 starter creatures with sprites (idle + attack + hurt + faint animations)
 - [ ] 20 moves implemented
 - [ ] 10 relics

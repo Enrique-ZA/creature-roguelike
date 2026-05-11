@@ -1,18 +1,16 @@
-import 'dart:ui';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
-import '../creatures.dart';
-import '../moves.dart';
+import 'moves.dart';
 import 'battle_system.dart';
-import 'status_effects.dart';
 
 /// A single HP bar component.
 class HpBar extends PositionComponent {
   HpBar({required this.creature, required this.isEnemy})
       : super(size: Vector2(200, 20));
 
-  final BattleCreature creature;
+  BattleCreature creature;
   final bool isEnemy;
 
   @override
@@ -64,9 +62,10 @@ class MoveButton extends PositionComponent with TapCallbacks {
 
 /// Floating damage number that fades out.
 class DamageNumber extends PositionComponent {
-  DamageNumber({required int amount, required Vector2 position})
+  DamageNumber({required this.amount, required Vector2 position})
       : super(position: position, anchor: Anchor.center);
 
+  final int amount;
   double opacity = 1.0;
   late final TextComponent textComp;
 
@@ -76,7 +75,7 @@ class DamageNumber extends PositionComponent {
       text: amount.toString(),
       textRenderer: TextPaint(
         style: TextStyle(
-          color: Colors.yellow.withOpacity(opacity),
+          color: Colors.yellow.withValues(alpha: opacity),
           fontSize: 24,
           fontWeight: FontWeight.bold,
         ),

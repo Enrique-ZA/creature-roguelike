@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
-import '../creatures.dart';
+import 'creatures.dart';
 
 /// Represents a node on the world map.
 enum MapNodeType { battle, rest, shop, boss }
@@ -11,7 +11,7 @@ class MapNode {
   final String id;
   final MapNodeType type;
   final Vector2 position;
-  final List<String> connections; // ids of connected nodes
+  List<String> connections; // ids of connected nodes
   bool completed = false;
 
   MapNode({

@@ -1,6 +1,6 @@
 import 'dart:math';
-import '../creatures.dart';
-import '../moves.dart';
+import 'creatures.dart';
+import 'moves.dart';
 import 'status_effects.dart';
 
 /// Snapshot of a creature in battle (mutable HP, statuses, etc.).
@@ -123,7 +123,6 @@ TurnResult executeTurn(
     }
     // Enemy retaliates
     if (enemyMove != null) {
-      final oldHp = player.currentHp;
       enemyDamage = enemyMove.power;
       if (enemyMove.effect != null) {
         playerEffect = StatusEffect.values.firstWhere((e) => e.name == enemyMove.effect);
@@ -134,7 +133,6 @@ TurnResult executeTurn(
   } else {
     // Enemy first
     if (enemyMove != null) {
-      final oldHp = player.currentHp;
       enemyDamage = enemyMove.power;
       if (enemyMove.effect != null) {
         playerEffect = StatusEffect.values.firstWhere((e) => e.name == enemyMove.effect);

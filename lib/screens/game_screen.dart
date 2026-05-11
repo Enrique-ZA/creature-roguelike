@@ -14,7 +14,7 @@ class GameScreen extends StatelessWidget {
       body: GameWidget(
         game: RoguelikeGame(
           onExit: () => Navigator.pushReplacementNamed(context, '/menu'),
-          selectedCreature: selectedCreature,
+          selectedCreature: selectedCreature!,
         ),
       ),
     );
