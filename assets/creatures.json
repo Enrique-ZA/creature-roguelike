@@ -5,21 +5,13 @@
     "type": "fire",
     "rarity": "common",
     "isShiny": false,
-    "stats": {
-      "hp": 90,
-      "attack": 14,
-      "defence": 8,
-      "speed": 12,
-      "spirit": 4
-    },
-    "moveIds": ["001", "004"],
-    "passive": {
-      "name": "Blaze",
-      "description": "Deal +10% damage when HP < 50%"
-    },
+    "stats": { "hp": 90, "attack": 14, "defence": 8, "speed": 12, "spirit": 4 },
+    "moveIds": ["001", "004", "005"],
+    "passive": { "name": "Blaze", "description": "Deal +10% damage when HP < 50%" },
     "evolutionStage": 1,
     "isUnlocked": true,
-    "runCount": 0
+    "runCount": 0,
+    "spritePath": "sprites/embrix.png"
   },
   {
     "id": "c002",
@@ -27,20 +19,54 @@
     "type": "water",
     "rarity": "common",
     "isShiny": false,
-    "stats": {
-      "hp": 100,
-      "attack": 11,
-      "defence": 9,
-      "speed": 10,
-      "spirit": 5
-    },
-    "moveIds": ["002", "003"],
-    "passive": {
-      "name": "Soothing Waters",
-      "description": "Heal 5 HP after each battle won"
-    },
+    "stats": { "hp": 100, "attack": 11, "defence": 9, "speed": 10, "spirit": 5 },
+    "moveIds": ["002", "003", "006"],
+    "passive": { "name": "Soothing Waters", "description": "Heal 5 HP after each battle won" },
     "evolutionStage": 1,
     "isUnlocked": true,
-    "runCount": 0
+    "runCount": 0,
+    "spritePath": "sprites/thalor.png"
+  },
+  {
+    "id": "c003",
+    "name": "Terravox",
+    "type": "earth",
+    "rarity": "uncommon",
+    "isShiny": false,
+    "stats": { "hp": 110, "attack": 12, "defence": 12, "speed": 7, "spirit": 3 },
+    "moveIds": ["007", "008", "009"],
+    "passive": { "name": "Stone Skin", "description": "Reduce physical damage taken by 15%" },
+    "evolutionStage": 1,
+    "isUnlocked": true,
+    "runCount": 0,
+    "spritePath": "sprites/terravox.png"
+  },
+  {
+    "id": "c004",
+    "name": "Zephyrex",
+    "type": "wind",
+    "rarity": "uncommon",
+    "isShiny": false,
+    "stats": { "hp": 85, "attack": 13, "defence": 6, "speed": 18, "spirit": 5 },
+    "moveIds": ["010", "011", "012"],
+    "passive": { "name": "Tailwind", "description": "Speed increases by 20% when HP > 50%" },
+    "evolutionStage": 1,
+    "isUnlocked": true,
+    "runCount": 0,
+    "spritePath": "sprites/zephyrex.png"
+  },
+  {
+    "id": "c005",
+    "name": "Umbril",
+    "type": "shadow",
+    "rarity": "rare",
+    "isShiny": false,
+    "stats": { "hp": 80, "attack": 16, "defence": 5, "speed": 15, "spirit": 6 },
+    "moveIds": ["013", "014", "015"],
+    "passive": { "name": "Shadow Veil", "description": "10% chance to evade any attack" },
+    "evolutionStage": 1,
+    "isUnlocked": true,
+    "runCount": 0,
+    "spritePath": "sprites/umbril.png"
   }
 ]
